@@ -11,7 +11,8 @@ const list = document.querySelector<HTMLUListElement>("#list")
 const form = document.querySelector<HTMLFormElement>("#new-task-form")
 const input = document.querySelector<HTMLInputElement>("#new-task-title")
 
-const tasks: Task[] = []
+const tasks: Task[] = loadTasks()
+tasks.forEach(addListItem)
 
 form?.addEventListener("submit", e => {
     e.preventDefault() //Prevents the page to reload when sending a form
@@ -49,4 +50,12 @@ function addListItem(task: Task) {
 
 function saveTasks() {
     localStorage.setItem("TASKS", JSON.stringify(tasks))
+}
+
+function loadTasks(): Task[] {
+
+    const taskJSON =localStorage.getItem("TASKS")
+
+    if (taskJSON == null) return [] // returns empty array
+    return JSON.parse(taskJSON)
 }
