@@ -35,17 +35,27 @@ function addListItem(task: Task) {
     const item = document.createElement("li")
     const label = document.createElement("label")
     const checkbox = document.createElement("input")
+    const deleteButton = document.createElement("button")
     
     checkbox.addEventListener("change", () => {
         task.completed = checkbox.checked
         saveTasks()
     })
+
     checkbox.type = "checkbox"
     checkbox.checked = task.completed
     label.append(checkbox, task.title)
 
-    item.append(label)
+    deleteButton.textContent = "Delete"
+    deleteButton.addEventListener("click", () => {
+        item.remove()
+        deleteTask()
+        saveTasks()
+    })
+
+    item.append(label, deleteButton)
     list?.append(item)
+
 }
 
 function saveTasks() {
@@ -54,8 +64,14 @@ function saveTasks() {
 
 function loadTasks(): Task[] {
 
-    const taskJSON =localStorage.getItem("TASKS")
+    const taskJSON = localStorage.getItem("TASKS")
 
     if (taskJSON == null) return [] // returns empty array
     return JSON.parse(taskJSON)
+}
+
+function deleteTask() {
+    localStorage.getItem("TASKS")
+
+    localStorage.removeItem("TASKS")
 }
