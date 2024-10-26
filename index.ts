@@ -49,8 +49,7 @@ function addListItem(task: Task) {
     deleteButton.textContent = "Delete"
     deleteButton.addEventListener("click", () => {
         item.remove()
-        deleteTask()
-        saveTasks()
+        deleteTask(task)
     })
 
     item.append(label, deleteButton)
@@ -66,12 +65,15 @@ function loadTasks(): Task[] {
 
     const taskJSON = localStorage.getItem("TASKS")
 
-    if (taskJSON == null) return [] // returns empty array
+    if (taskJSON == null) return [] //Returns empty array
     return JSON.parse(taskJSON)
 }
 
-function deleteTask() {
-    localStorage.getItem("TASKS")
+function deleteTask(task: Task) {
 
-    localStorage.removeItem("TASKS")
+    const index = tasks.findIndex((t) => t.id === task.id)
+
+    if (index !== -1) tasks.splice(index, 1)
+
+    localStorage.setItem("TASKS", JSON.stringify(tasks))
 }
